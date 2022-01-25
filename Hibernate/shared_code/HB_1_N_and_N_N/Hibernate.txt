@@ -1,0 +1,84 @@
+Hibernate Inheritance Mapping:
+
+Hibernate inheritance mapping strategies-
+1) Table Per Hierarchy
+2) Table Per Concrete class
+3) Table Per Subclass
+
+
+1) Table Per Hierarchy:
+@Entity  
+@Table(name = "vehicle")  
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)  
+@DiscriminatorColumn(name="type",discriminatorType=DiscriminatorType.STRING)  
+@DiscriminatorValue(value="vehicle")  
+public class Vehicle {
+	//attributes
+}
+
+@Entity  
+@DiscriminatorValue("two_wheeler")  
+public class TwoWheeler extends Vehicle{ 	
+	//attributes
+}
+
+@Entity  
+@DiscriminatorValue("four_wheeler")  
+public class FourWheeler extends Vehicle{ 	
+	//attributes
+}
+
+
+
+
+
+
+2) Table Per Concrete class
+@Entity  
+@Table(name = "vehicle")  
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  
+public class Vehicle {
+	//attributes [id, name]
+}
+
+@Entity  
+@Table(name = "two_wheeler")  
+@AttributeOverrides({  
+    @AttributeOverride(name="id", column=@Column(name="id")),  
+    @AttributeOverride(name="name", column=@Column(name="name"))  
+})  
+public class TwoWheeler extends Vehicle {
+	//attributes
+}
+
+@Entity  
+@Table(name = "four_wheeler")  
+@AttributeOverrides({  
+    @AttributeOverride(name="id", column=@Column(name="id")),  
+    @AttributeOverride(name="name", column=@Column(name="name"))  
+})  
+public class FourWheeler extends Vehicle {
+	//attributes
+}
+
+
+
+
+
+
+3) Table Per Subclass
+@Entity
+@Table(name = "VEHICLE")  
+@Inheritance(strategy=InheritanceType.JOINED)  
+public class Vehicle {
+	//attributes [id, name]
+}
+
+@Entity  
+@Table(name="TWO_WHEELER")  
+@PrimaryKeyJoinColumn(name="ID")  
+public class TwoWheeler extends Vehicle { 
+	//attributes
+}
+
+
